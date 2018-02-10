@@ -1,0 +1,70 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Amazon Elasticsearch Service domain management
+
+#
+# Parameters
+#
+Parameters:
+  EsInstanceCount:
+    Description: Elasticsearch Host Count
+    Type: Number
+    AllowedValues:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+    Default: 1
+  EsInstanceType:
+    Description: Elasticsearch Host Instance Type
+    Type: String
+    AllowedValues:
+      - t2.small.elasticsearch
+      - t2.medium.elasticsearch
+      - r4.large.elasticsearch
+      - r4.xlarge.elasticsearch
+    Default: t2.small.elasticsearch
+  EsVolumeSize:
+    Description: Elasticsearch Host Instance volume size
+    Type: Number
+    Default: 10
+  MaintenanceIPAddresses:
+    Description: Maintenance IP Addresses to Amazon Elasticsearch Service
+    Type: CommaDelimitedList
+  
+#
+# Resources
+#
+Resources:
+  ElasticsearchDomain:
+    Type: AWS::Elasticsearch::Domain
+    Properties:
+      DomainName: !Sub ${AWS::StackName}
+      ElasticsearchVersion: 6.0
+      ElasticsearchClusterConfig:
+        InstanceCount: !Ref EsInstanceCount
+        InstanceType: !Ref EsInstanceType
+      EBSOptions:
+        EBSEnabled: 'true'
+        VolumeSize: !Ref EsVolumeSize
+        VolumeType: gp2
+      SnapshotOptions:
+        AutomatedSnapshotStartHour: '0'
+      AccessPolicies:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: '*'
+            Action: 'es:ESHttpGet'
+            Resource: !Sub arn:aws:es:${AWS::Region}:${AWS::AccountId}:domain/${AWS::StackName}/_search
+          - Effect: Allow
+            Principal:
+              AWS: '*'
+            Action: 'es:ESHttp*'
+            Resource: !Sub arn:aws:es:${AWS::Region}:${AWS::AccountId}:domain/${AWS::StackName}/*
+            Condition: 
+              IpAddress:
+                aws:SourceIp: !Ref MaintenanceIPAddresses

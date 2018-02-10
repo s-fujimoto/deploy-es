@@ -1,0 +1,41 @@
+{
+  "script": {
+    "lang": "mustache",
+    "source": {
+      "size": "{{size}}{{^size}}10{{/size}}",
+      "from": "{{from}}{{^from}}0{{/from}}",
+      "query": {
+        "bool": {
+          "should": [
+            {
+              "multi_match": {
+                "type": "phrase",
+                "query": "{{query}}",
+                "fields": [
+                  "title",
+                  "description"
+                ],
+                "operator": "and"
+              }
+            },
+            {
+              "multi_match": {
+                "query": "{{query}}",
+                "fields": [
+                  "title",
+                  "description"
+                ],
+                "operator": "and"
+              }
+            }
+          ]
+        }
+      },
+      "highlight": {
+        "fields": {
+          "content": {}
+        }
+      }
+    }
+  }
+}
