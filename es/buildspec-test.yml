@@ -3,9 +3,10 @@ version: 0.2
 phases:
   install:
     commands:
+      - cd es
       - docker-compose build
   build:
     commands:
       - docker-compose up -d es
       - sleep 5
-      - docker-compose run crawler python3 -m pytest -v
+      - docker-compose run test python3 -m pytest -v
