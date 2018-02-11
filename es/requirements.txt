@@ -1,2 +1,4 @@
-elasticsearch
+elasticsearch==6.0.0
 pytest
+aws-requests-auth
+botocore
