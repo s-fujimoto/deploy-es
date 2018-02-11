@@ -1,4 +1,8 @@
+### Python dirs and files
 .python-version
-.idea
 __pycache__
 venv
+.pytest_cache
+
+### IDE dirs and files
+.idea

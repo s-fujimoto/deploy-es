@@ -9,4 +9,5 @@ phases:
     commands:
       - docker-compose up -d es
       - sleep 5
-      - docker-compose run test python3 -m pytest -v
+      - docker-compose run test python deployes/bin/deploy.py
+      - docker-compose run test python -m pytest -v

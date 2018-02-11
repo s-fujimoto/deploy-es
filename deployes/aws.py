@@ -7,7 +7,7 @@ import os
 
 def get_auth(host, region):
     credential = credentials.get_credentials(Session())
-    if credential.access_key:
+    if hasattr(credential, 'access_key'):
         return AWSRequestsAuth(aws_access_key=credential.access_key,
                                aws_secret_access_key=credential.secret_key,
                                aws_token=credential.token,
@@ -15,8 +15,8 @@ def get_auth(host, region):
                                aws_region=region,
                                aws_service='es')
 
-    credential = ContainerMetadataFetcher().retrieve_uri(os.environ.get("CODEBUILD_AGENT_ENV_AWS_CONTAINER_CREDENTIALS_RELATIVE_URI"))
-    if credential:
+    if os.environ.get("AWS_CONTAINER_CREDENTIALS_RELATIVE_URI"):
+        credential = ContainerMetadataFetcher().retrieve_uri()
         return AWSRequestsAuth(aws_access_key=credential['access_key'],
                                aws_secret_access_key=credential['secret_key'],
                                aws_token=credential['token'],

@@ -7,4 +7,4 @@ phases:
       - pip install -r requirements.txt
   build:
     commands:
-      - PYTHONPATH=. python bin/deploy.py
+      - PYTHONPATH=. python deployes/bin/deploy.py

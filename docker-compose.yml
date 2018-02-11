@@ -8,6 +8,7 @@ services:
       dockerfile: docker/test/Dockerfile
     environment:
       ES_HOST: es:9200
+      PYTHONPATH: /app
     links:
       - es
 
