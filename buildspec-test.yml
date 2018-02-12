@@ -6,10 +6,12 @@ phases:
       - docker-compose up -d es
       - docker-compose build test
       - docker-compose ps
+      - docker-compose logs
   build:
     commands:
       - sleep 30
       - docker-compose ps
+      - docker-compose logs
       - curl localhost:9200
       - docker-compose run test python deployes/bin/deploy.py
       - docker-compose run test python -m pytest -v
