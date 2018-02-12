@@ -7,9 +7,11 @@ services:
       context: .
       dockerfile: docker/test/Dockerfile
     environment:
-      ES_HOST: es
+      ES_HOST: es:9200
       PYTHONPATH: /app
     links:
+      - es:es
+    depends_on:
       - es
 
   es:
