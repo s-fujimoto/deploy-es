@@ -4,9 +4,8 @@ phases:
   install:
     commands:
       - sysctl -w vm.max_map_count=262144
-      - docker-compose up -d es
+      - docker-compose up es
       - docker-compose build test
-      - curl localhost:9200
   build:
     commands:
       - sleep 20
