@@ -3,9 +3,6 @@ import os
 from deployes.es import Elasticsearch
 from elasticsearch.helpers import bulk
 
-from logging import getLogger, StreamHandler
-logger = getLogger(__name__)
-logger.addHandler(StreamHandler())
 
 @pytest.fixture()
 def es():
