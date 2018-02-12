@@ -3,12 +3,13 @@ version: 0.2
 phases:
   install:
     commands:
-      - docker-compose build
+      - docker-compose up -d es
+      - docker-compose build test
+      - docker-compose ps
   build:
     commands:
-      - docker-compose up -d es
-      - sleep 60
+      - sleep 30
+      - docker-compose ps
       - curl localhost:9200
-      - docker network ls
       - docker-compose run test python deployes/bin/deploy.py
       - docker-compose run test python -m pytest -v
