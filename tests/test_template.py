@@ -94,6 +94,6 @@ class TestEs(object):
         index_data = result[index_name]
         properties = index_data['mappings'][type_name]['properties']
 
-        assert len(properties) == 3
+        assert len(properties) == 2
         assert properties['timestamp']['type'] == 'date'
         assert properties['url']['type'] == 'keyword'
