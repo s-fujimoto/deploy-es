@@ -6,9 +6,9 @@ phases:
       - sysctl -w vm.max_map_count=262144
       - docker-compose up -d es
       - docker-compose build test
+      - pip install awscli
   build:
     commands:
-      - sleep 20
-      - curl localhost:9200
+      - find cfn -name "*.yml" |xargs -I{} aws cloudformation validate-template --template-body file://{}
       - docker-compose run test python deployes/bin/deploy.py
       - docker-compose run test python -m pytest -v
