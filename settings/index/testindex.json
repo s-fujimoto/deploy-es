@@ -1,0 +1,16 @@
+{
+  "index_patterns": "testindex-*",
+  "order": 1,
+  "mappings": {
+    "type": {
+      "properties": {
+        "timestamp": {
+          "type": "date"
+        },
+        "url": {
+          "type": "keyword"
+        }
+      }
+    }
+  }
+}

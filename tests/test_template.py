@@ -76,3 +76,24 @@ class TestEs(object):
 
         assert analysis['tokenizer']['japanese_search']['type'] == 'kuromoji_tokenizer'
         assert analysis['analyzer']['japanese_analyzer']['tokenizer'] == 'japanese_search'
+
+    def test_testindex_index_template(self, es):
+        index_name = 'testindex-yyyymmdd'
+        type_name = 'type'
+        test_data = [
+            {'_index': index_name, '_type': type_name, '_id': '1',
+             '_source': {'timestamp': '2018-02-13T18:21:00+0900', 'url': 'https://classmethod.jp/1'}},
+            {'_index': index_name, '_type': type_name, '_id': '2',
+             '_source': {'timestamp': '2017-01-01T00:22:00+0900', 'url': 'https://classmethod.jp/2'}},
+            {'_index': index_name, '_type': type_name, '_id': '3',
+             '_source': {'timestamp': '2018-01-31T19:20:00+0900', 'url': 'https://classmethod.jp/3'}},
+        ]
+        bulk(es, test_data, refresh=True)
+
+        result = es.indices.get(index_name)
+        index_data = result[index_name]
+        properties = index_data['mappings'][type_name]['properties']
+
+        assert len(properties) == 3
+        assert properties['timestamp']['type'] == 'date'
+        assert properties['url']['type'] == 'keyword'
