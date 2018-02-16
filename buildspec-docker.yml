@@ -6,7 +6,7 @@ phases:
       - $(aws ecr get-login --region ${AWS_DEFAULT_REGION} --no-include-email)
       - AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' --output text)
       - REPOSITORY_URI=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPOSITORY_NAME}
-      - IMAGE_TAG=$(git rev-parse --short HEAD)
+      - IMAGE_TAG=$(git describe --tags)
   build:
     commands:
       - docker build -t ${REPOSITORY_URI}:latest -f docker/test/Dockerfile .
